@@ -20,7 +20,7 @@ export const initJobs = async () => {
     repeat: {
       // At 09:00 on Monday in January, February, March, April, May, September, October, November, and December
       // 5pm UTC = 9am PST
-      cron: '* * * * *'
+      cron: '0 7,17,18 * * *'
       // cron: '0 17 * 1,2,3,4,5,9,10,11,12 MON',
     }
   })
