@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
-    "start": "pm2-runtime start ecosystem.config.js --env production"
+    "start": "cross-env nodemon",
+    "pm2": "pm2-runtime start ecosystem.config.js --env production"
   },
   "author": "Emmy Armintrout",
   "license": "ISC",
