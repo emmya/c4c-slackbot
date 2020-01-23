@@ -12,4 +12,7 @@ sendSlack();
 
 app.listen(process.env.PORT || app.get('port'));
 
+app.post('/hrs-needed', async (req, res) => {
+  console.log(req.body);
+});
 
