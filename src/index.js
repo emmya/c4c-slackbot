@@ -10,6 +10,6 @@ initJobs();
 
 sendSlack();
 
-app.listen(app.get('port'));
+app.listen(process.env.PORT || app.get('port'));
 
 
