@@ -1,0 +1,8 @@
+{
+  "verbose": false,
+  "watch": [
+    "src",
+    "config"
+  ],
+  "exec": "TZ=utc babel-node src/index.js"
+}
