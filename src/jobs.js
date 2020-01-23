@@ -6,7 +6,7 @@ import { sendSlack } from '/src/slack-webhook';
 const queue = new Bull(`slackbotQueue`, redisUrl);
 
 queue.process('slackbotQueue', async (job) => {
-  sendSlack();
+  await sendSlack();
 })
 
 queue.on('completed', (job, result) => {
@@ -15,8 +15,8 @@ queue.on('completed', (job, result) => {
 
 
 export const initJobs = async () => {
-  // await queue.empty();
-  queue.add('slackbotQueue', {}, {
+  await queue.empty();
+  await queue.add('slackbotQueue', {}, {
     repeat: {
       // At 09:00 on Monday in January, February, March, April, May, September, October, November, and December
       // 5pm UTC = 9am PST
