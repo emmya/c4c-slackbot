@@ -17,3 +17,4 @@ const arenaConfig = Arena({
 export default (app) => {
   app.use('/', arenaConfig);
 }
+
