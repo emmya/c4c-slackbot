@@ -11,8 +11,8 @@ const getDates = () => {
   const today = moment();
 
   const c4cDueOn = moment();
-  c4cDueOn.month(c4cMonthDue);
-  c4cDueOn.day(c4cDayDue);
+  c4cDueOn.month(c4cMonthDue - 1);
+  c4cDueOn.date(c4cDayDue);
 
   const emoji = _.sample(['✨', '🏀', '🏅', '🎾', '🏁', '🏆', '🌴', '💯', '😎', '🙌', '💫', '🏐', '🏈', '⚽️', '🥏', '🎮']);
 
@@ -28,14 +28,15 @@ const getDates = () => {
   let hoursStr;
   let cta;
 
-  if (monthsUntilDue >= 6) {
+  if (monthsUntilDue >= 5) {
     const hoursPerMonth = Math.ceil(hoursRequired / monthsUntilDue * 2) / 2;
+    cta = `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`
     hoursStr = `If you have 0 hours today, you need to volunteer *${pluralize(hoursPerMonth, 'hour')} each month* until C4C.`;
   }
 
-  else if (weeksUntilDue >= 3) {
+  else if (weeksUntilDue >= 7) {
     const hoursPerWeek = Math.ceil(hoursRequired / weeksUntilDue * 2) / 2;
-    cta = `${emoji} C4C is ${c4cDueOn.fromNow()}!`
+    cta = `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`
     hoursStr = `If you have 0 hours today, you need to volunteer *${pluralize(hoursPerWeek, 'hour')} each week* until C4C.`;
   }
 
@@ -58,47 +59,51 @@ const getDates = () => {
 
 export const sendSlack = async () => {
   const { hoursStr, cta } = getDates();
-  await webhook.send({
-    blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'plain_text',
-          text: cta,
-          emoji: true,
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: hoursStr,
-        }
-      }, {
-        type: 'actions',
-        elements: [
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              emoji: true,
-              text: 'Sign up to volunteer!',
-            },
-            style: 'primary',
-            url: volunteerSignupUrl,
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              emoji: true,
-              text: 'Check/report your hours',
-            },
-            url: submitHoursUrl,
+  try {
+    await webhook.send({
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: cta,
+            // emoji: true,
           }
-        ]
-      }
-    ]
-  });
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: hoursStr,
+          }
+        }, {
+          type: 'actions',
+          elements: [
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                emoji: true,
+                text: 'Sign up to volunteer!',
+              },
+              style: 'primary',
+              url: volunteerSignupUrl,
+            },
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                emoji: true,
+                text: 'Check/report your hours',
+              },
+              url: submitHoursUrl,
+            }
+          ]
+        }
+      ]
+    });
+  } catch (e) {
+    console.log(e);
+  }
 }
 

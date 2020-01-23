@@ -10,7 +10,7 @@ export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 export const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL || devSettings.slackWebhookUrl;
 
 export const c4cMonthDue = process.env.MONTH_DUE || 4;
-export const c4cDayDue = process.env.DAY_DUE || 13;
+export const c4cDayDue = process.env.DAY_DUE || 14;
 export const hoursRequired = process.env.HOURS_REQUIRED || 30;
 export const volunteerSignupUrl = process.env.VOLUNTEER_SIGNUP_URL || 'https://docs.google.com/spreadsheets/d/1dZLyfR80DrheDvfmRrTf2Rgp7JMBLZZwh4LpxGKTf0w/edit';
 export const checkHoursUrl = process.env.CHECK_HOURS_URL || 'https://docs.google.com/spreadsheets/d/17xm8q8UMrPr-yw2B35QQ3-2stXkwiXY90h99h7G-Nm0/edit#gid=115314881';
