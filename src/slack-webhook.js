@@ -1,73 +1,21 @@
 import _ from 'lodash';
 import { IncomingWebhook } from '@slack/webhook';
-import { slackWebhookUrl, c4cMonthDue, c4cDayDue, hoursRequired, volunteerSignupUrl, checkHoursUrl, submitHoursUrl } from '/config/settings';
+import { slackWebhookUrl, volunteerSignupUrl, checkHoursUrl, submitHoursUrl } from '/config/settings';
 import moment from 'moment';
+import { getMessageStrings } from './get-messages';
 
 const webhook = new IncomingWebhook(slackWebhookUrl);
 
-const pluralize = (num, str) => num === 1 ? `${num} ${str}` : `${num} ${str}s`;
-
-const getDates = () => {
-  const today = moment();
-
-  const c4cDueOn = moment();
-  c4cDueOn.month(c4cMonthDue - 1);
-  c4cDueOn.date(c4cDayDue);
-
-  const emoji = _.sample(['✨', '🏀', '🏅', '🎾', '🏁', '🏆', '🌴', '💯', '😎', '🙌', '💫', '🏐', '🏈', '⚽️', '🥏', '🎮']);
-
-  // if it's after the due date we set it to next year
-  if (today.isAfter(c4cDueOn)) {
-    c4cDueOn.add(1, 'year');
-  }
-
-  const monthsUntilDue = c4cDueOn.diff(today, 'months');
-  const weeksUntilDue = c4cDueOn.diff(today, 'weeks');
-  const daysUntilDue = c4cDueOn.diff(today, 'days');
-
-  let hoursStr;
-  let cta;
-
-  if (monthsUntilDue >= 5) {
-    const hoursPerMonth = Math.ceil(hoursRequired / monthsUntilDue * 2) / 2;
-    cta = `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`
-    hoursStr = `If you have 0 hours today, you need to volunteer *${pluralize(hoursPerMonth, 'hour')} each month* until C4C.`;
-  }
-
-  else if (weeksUntilDue >= 7) {
-    const hoursPerWeek = Math.ceil(hoursRequired / weeksUntilDue * 2) / 2;
-    cta = `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`
-    hoursStr = `If you have 0 hours today, you need to volunteer *${pluralize(hoursPerWeek, 'hour')} each week* until C4C.`;
-  }
-
-  else if (daysUntilDue >= 6) {
-    const hoursPerDay = Math.ceil(hoursRequired / daysUntilDue * 2) / 2;
-    cta = `${emoji} Get pumped! C4C weekend is just ${c4cDueOn.fromNow(true)} away.`
-    hoursStr = `If you have 0 hours today, you need to volunteer *${pluralize(hoursPerDay, 'hour')} each day* until C4C.`;
-  }
-
-  else {
-    cta = `🏆✨💯🌴🏅💪 LESSGOOOO00OoooOOOo`
-    hoursStr = `C4C is upon us! CRUSH IT`;
-  }
-
-  return {
-    hoursStr,
-    cta,
-  }
-}
-
 export const sendSlack = async () => {
-  const { hoursStr, cta } = getDates();
+  const { hoursStr, cta, isThisWeek, c4cDate } = getMessageStrings(0);
   try {
-    await webhook.send({
+    await webhook.send( isThisWeek ? {
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
             text: cta,
-            // emoji: true,
           }
         },
         {
@@ -76,7 +24,25 @@ export const sendSlack = async () => {
             type: 'mrkdwn',
             text: hoursStr,
           }
-        }, {
+        },
+      ]
+    } : {
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `${cta}`,
+          }
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `${hoursStr} until C4C.`,
+          }
+        },
+        {
           type: 'actions',
           elements: [
             {
@@ -97,9 +63,26 @@ export const sendSlack = async () => {
                 text: 'Check/report your hours',
               },
               url: submitHoursUrl,
-            }
+            },
           ]
-        }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          type: 'context',
+          elements: [
+          // {
+          //   type: 'mrkdwn',
+          //   text: `${hoursStr} until C4C.`,
+          // }, 
+          {
+            // text: {
+              type: 'mrkdwn',
+              text: `Ask based on your hours by entering "/c4c [hours you've completed]".`,
+            // }
+          }]
+        }, 
       ]
     });
   } catch (e) {
