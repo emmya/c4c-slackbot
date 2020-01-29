@@ -20,10 +20,6 @@ export const getMessageStrings = (hoursAlready = 0) => {
   const weeksUntilDue = c4cDueOn.diff(today, 'weeks');
   const daysUntilDue = c4cDueOn.diff(today, 'days');
 
-  const emoji = _.sample(['✨', '🏀', '🏅', '🎾', '🏁', '🏆', '🌴', '☀️', '💯', '😎', '🙌', '💫', '🏐', '🏈', '⚽️', '🥏', '🎮']);
-  let hoursStr;
-  let cta;
-
   if (daysUntilDue <= 6) {
     return {
       cta: `🏆✨💯🌴🏅💪 LESSGOOOO00OoooOOOo`,
@@ -33,6 +29,10 @@ export const getMessageStrings = (hoursAlready = 0) => {
       isThisWeek: true,
     }
   }
+
+  const emoji = _.sample(['✨', '🏀', '🏅', '🎾', '🏁', '🏆', '🌴', '☀️', '💯', '😎', '🙌', '💫', '🏐', '🏈', '⚽️', '🥏', '🎮']);
+  let hoursStr;
+  let cta;
 
   if (monthsUntilDue >= 6) {
     const hoursPerMonth = Math.ceil((hoursRequired - hoursAlready) / monthsUntilDue * 4) / 4;

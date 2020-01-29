@@ -10,8 +10,6 @@ const arenaConfig = Arena({
     },
 }]}, {
   basePath: '/arena',
-  // // Let express handle the listening.
-  // disableListen: true,
 });
 
 export default (app) => {

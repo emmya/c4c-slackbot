@@ -1,15 +1,12 @@
 import _ from 'lodash';
 import express from 'express';
+import bodyParser from 'body-parser';
 import initArena from '/src/arena';
 import { initJobs } from '/src/jobs';
-import { sendSlack } from '/src/slack-webhook';
-import bodyParser from 'body-parser';
 import { getMessageStrings } from './get-messages';
 // import { WebClient } from '@slack/web-api';
 
 const app = express();
-
-// sendSlack();
 
 initArena(app);
 
@@ -45,8 +42,8 @@ app.post('/hrs-needed', async (req, res) => {
         'Sunshine and victory coming your way.',
         'Noice.',
         'Good dawg.',
-        'You need 0 hours. But you knew that already.',
-        // 'You found the golden ticket 🎟',
+        '🤩',
+        '😎',
       ])
     })
     return;  
@@ -65,15 +62,15 @@ app.post('/interact', async (req, res) => {
 });
 
 
+// Below feature requires workspace token
+// aka admin permish
 
 
+// const web = new WebClient([token]);
 
 // app.post('/chat', async (req, res) => {
-//   console.log(req.body);
-
 //   const { challenge, event } = req.body || {};
-//   // const hours = parseInt(text) || 0;
-//   // const { weeksRemainingStr, hoursStr } = getMessageStrings(hours);
+
 //   if (challenge) {
 //     res.status(200).send({ challenge });
 //     return;
@@ -89,7 +86,6 @@ app.post('/interact', async (req, res) => {
 //       text: 'Sup',
 //     });
 
-//     console.log(yo);
 //   } catch (e) {
 //     console.error(e);
 //   }

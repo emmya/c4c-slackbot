@@ -1,14 +1,11 @@
-import _ from 'lodash';
 import { IncomingWebhook } from '@slack/webhook';
 import { slackWebhookUrl, volunteerSignupUrl, checkHoursUrl, submitHoursUrl } from '/config/settings';
-import moment from 'moment';
 import { getMessageStrings } from './get-messages';
 
 const webhook = new IncomingWebhook(slackWebhookUrl);
 
 export const sendSlack = async () => {
   const { hoursStr, cta, isThisWeek, c4cDate } = getMessageStrings(0);
-  console.log('?');
   try {
     await webhook.send( isThisWeek ? {
       blocks: [
