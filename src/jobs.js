@@ -8,6 +8,7 @@ const queue = new Bull(`slackbotQueue`, redisUrl);
 // queue.empty();
 
 queue.process('slackbotQueue', async (job) => {
+  console.log('sending');
   await sendSlack();
 })
 
@@ -33,8 +34,8 @@ export const initJobs = async () => {
       // At 09:00 on Monday in January, February, March, April, May, September, October, November, and December
       // 5pm UTC = 9am PST
       // cron: '15 17 * 1,2,3,4,5,9,10,11,12 MON',
-      cron: '5 * * * *'
-      // cron: '0 17 * 1,2,3,4,5,9,10,11,12 MON',
+      // cron: '* * * * *'
+      cron: '0 17 * 1,2,3,4,5,9,10,11,12 THU',
     }
   });
 }

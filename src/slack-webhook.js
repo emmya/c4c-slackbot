@@ -8,6 +8,7 @@ const webhook = new IncomingWebhook(slackWebhookUrl);
 
 export const sendSlack = async () => {
   const { hoursStr, cta, isThisWeek, c4cDate } = getMessageStrings(0);
+  console.log('?');
   try {
     await webhook.send( isThisWeek ? {
       blocks: [
