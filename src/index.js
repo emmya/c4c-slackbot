@@ -12,6 +12,7 @@ const app = express();
 // sendSlack();
 
 initArena(app);
+
 initJobs();
 
 app.set('port', process.env.PORT || 8000);
