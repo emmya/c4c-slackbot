@@ -29,10 +29,11 @@ export const initJobs = async () => {
 
   await queue.add('slackbotQueue', {}, {
     repeat: {
+      // https://crontab.guru/
       // At 09:00 PT in January, February, March, April, May, September, October, November, and December
       // 5pm UTC = 9am PST
       // cron: '* * * 1,2,3,4,5,9,10,11,12 THU',
-      cron: '25 20 * 1,2,3,4,5,9,10,11,12 THU',
+      cron: '35 * * 1,2,3,4,5,9,10,11,12 THU',
       // cron: '* * * * *',
     }
   });
