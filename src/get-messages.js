@@ -43,11 +43,11 @@ export const getMessageStrings = (hoursAlready = 0) => {
 
   else if (weeksUntilDue >= 7) {
     const hoursPerWeek = Math.ceil((hoursRequired - hoursAlready) / weeksUntilDue * 4) / 4;
-    cta = `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`
+    cta = `${emoji} *C4C is in ${pluralize(weeksUntilDue, 'week')}!*`,
     hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *~${pluralize(hoursPerWeek, 'hour')} each week*`;
   }
 
-  else if (daysUntilDue >= 6) {
+  else {
     const hoursPerDay = Math.ceil((hoursRequired - hoursAlready) / daysUntilDue * 4) / 4;
     cta = `${emoji} Get pumped! C4C weekend is just ${c4cDueOn.fromNow(true)} away.`
     hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *~${pluralize(hoursPerDay, 'hour')} each day*`;
