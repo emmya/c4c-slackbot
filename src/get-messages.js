@@ -31,26 +31,33 @@ export const getMessageStrings = (hoursAlready = 0) => {
   }
 
   const emoji = _.sample(['✨', '🏀', '🏅', '🎾', '🏁', '🏆', '🌴', '☀️', '💯', '😎', '🙌', '💫', '🏐', '🏈', '⚽️', '🥏', '🎮']);
+  const hoursNeeded = hoursRequired - hoursAlready;
   let hoursStr;
   let cta;
 
   if (monthsUntilDue >= 6) {
-    const hoursPerMonth = Math.ceil((hoursRequired - hoursAlready) / monthsUntilDue * 4) / 4;
+    const hoursPerMonth = Math.ceil(hoursNeeded / monthsUntilDue * 4) / 4;
+    const isExact = hoursNeeded / monthsUntilDue === hoursPerMonth
+      ? '' : '~';
     cta = monthsUntilDue > 10 ? `${emoji} *C4C is in ${c4cDueOn.format('MMMM YYYY')}!*`
       : `${emoji} *C4C is ${c4cDueOn.fromNow()}!*`;
-    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *~${pluralize(hoursPerMonth, 'hour')} each month*`;
+    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *${isExact}${pluralize(hoursPerMonth, 'hour')} each month*`;
   }
 
   else if (weeksUntilDue >= 7) {
-    const hoursPerWeek = Math.ceil((hoursRequired - hoursAlready) / weeksUntilDue * 4) / 4;
+    const hoursPerWeek = Math.ceil(hoursNeeded / weeksUntilDue * 4) / 4;
+    const isExact = hoursNeeded / weeksUntilDue === hoursPerWeek
+      ? '' : '~';
     cta = `${emoji} *C4C is in ${pluralize(weeksUntilDue, 'week')}!*`,
-    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *~${pluralize(hoursPerWeek, 'hour')} each week*`;
+    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *${isExact}${pluralize(hoursPerWeek, 'hour')} each week*`;
   }
 
   else {
-    const hoursPerDay = Math.ceil((hoursRequired - hoursAlready) / daysUntilDue * 4) / 4;
+    const hoursPerDay = Math.ceil(hoursNeeded / daysUntilDue * 4) / 4;
+    const isExact = hoursNeeded / daysUntilDue === hoursPerDay
+      ? '' : '~';
     cta = `${emoji} Get pumped! C4C weekend is just ${c4cDueOn.fromNow(true)} away.`
-    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *~${pluralize(hoursPerDay, 'hour')} each day*`;
+    hoursStr = `If you have ${pluralize(hoursAlready, 'hour')} today, you need to volunteer *${isExact}${pluralize(hoursPerDay, 'hour')} each day*`;
   }
 
   return {
